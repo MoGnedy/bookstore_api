@@ -1,16 +1,22 @@
 
-let express = require('express');
-let app = express();
-let mongoose = require('mongoose');
-let morgan = require('morgan');
-let port = 8080;
-let book = require('./app/routes/book');
-let config = require('config'); //we load the db location from the JSON files
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const port = 8080;
+const book = require('./app/routes/book');
+const config = require('config'); //we load the db location from the JSON files
+const cors = require('cors')
+
+var corsOptions = {
+	origin: '*',
+	optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+  }
 //db options
-let options = {useNewUrlParser: true};
+const options = {useNewUrlParser: true};
 //db connection      
 mongoose.connect(config.DBHost , options);
-let db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 //don't show the log when it is test
@@ -18,6 +24,8 @@ if(config.util.getEnv('NODE_ENV') !== 'test') {
 	//use morgan to log at command line
 	app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
 }
+
+app.use(cors(corsOptions))
 
 //parse application/json and look for raw text                                        
 app.use(express.json());                                     
