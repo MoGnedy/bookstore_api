@@ -26,10 +26,10 @@ app.use(express.json({ type: 'application/json'}));
 
 app.get("/", (req, res) => res.json({message: "Welcome to our Bookstore!"}));
 
-app.route("/book")
+app.route("/api/v1/book")
 	.get(book.getBooks)
 	.post(book.postBook);
-app.route("/book/:id")
+app.route("/api/v1/book/:id")
 	.get(book.getBook)
 	.delete(book.deleteBook)
 	.put(book.updateBook);
